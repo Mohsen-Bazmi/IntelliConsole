@@ -1,0 +1,164 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole.Tests/IntelliConsole.Tests.csproj": {}
+  },
+  "projects": {
+    "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole.Tests/IntelliConsole.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole.Tests/IntelliConsole.Tests.csproj",
+        "projectName": "IntelliConsole.Tests",
+        "projectPath": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole.Tests/IntelliConsole.Tests.csproj",
+        "packagesPath": "/home/mohsen/.nuget/packages/",
+        "outputPath": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/mohsen/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/IntelliConsole.csproj": {
+                "projectPath": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/IntelliConsole.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Autofixture.xunit2": {
+              "target": "Package",
+              "version": "[4.11.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "Microsoft.Reactive.Testing": {
+              "target": "Package",
+              "version": "[4.4.1, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "coverlet.msbuild": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "fluentassertions": {
+              "target": "Package",
+              "version": "[5.10.3, )"
+            },
+            "fscheck.xunit": {
+              "target": "Package",
+              "version": "[2.14.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/IntelliConsole.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/IntelliConsole.csproj",
+        "projectName": "IntelliConsole",
+        "projectPath": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/IntelliConsole.csproj",
+        "packagesPath": "/home/mohsen/.nuget/packages/",
+        "outputPath": "/home/mohsen/Desktop/RPN/ConsoleExperience/IntelliConsole/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/mohsen/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "System.Reactive.Core": {
+              "target": "Package",
+              "version": "[4.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

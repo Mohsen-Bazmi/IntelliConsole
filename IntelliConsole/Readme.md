@@ -1,0 +1,3 @@
+```c#
+    ConsoleRules.Add()
+```
