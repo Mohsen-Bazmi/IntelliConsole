@@ -19,6 +19,7 @@ namespace IntelliConsole
         }
         public void NewLine()
         {
+            writer.ClearPrintedSuggestions();
             history.Record(CurrentLine);
 
             context = LineContext.Initial;

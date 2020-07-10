@@ -5,8 +5,8 @@ namespace IntelliConsole
     public class TypingExperienceConfig
     {
         internal TypingExperienceConfig() { }
-        Suggestions suggestions;
-        ISyntaxHighlighting syntaxHighlighting;
+        Suggestions suggestions = Suggestions.From();
+        ISyntaxHighlighting syntaxHighlighting = SyntaxHighlighting.Highlight;
         public ConsoleReader Console
         => new ConsoleReader(syntaxHighlighting, suggestions);
 

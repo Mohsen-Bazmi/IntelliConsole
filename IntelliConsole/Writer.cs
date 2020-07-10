@@ -19,16 +19,17 @@ namespace IntelliConsole
 
         ///*********
         int printedSuggestionsCount = 0;
-
         public void ClearPrintedSuggestions()
         {
             var originalTop = consoleWriter.CursorTop;
             var originalLeft = consoleWriter.CursorLeft;
             for (; printedSuggestionsCount > 0; printedSuggestionsCount--)
             {
+                // consoleWriter.WriteLine();
                 consoleWriter.CursorTop = originalTop + printedSuggestionsCount;
                 consoleWriter.CursorLeft = consoleWriter.BufferWidth;
                 for (var j = consoleWriter.BufferWidth; j > 0; j--)
+                    // consoleWriter.Write(" ");
                     consoleWriter.Write("\b \b");
             }
             consoleWriter.CursorTop = originalTop;
@@ -36,31 +37,37 @@ namespace IntelliConsole
         }
 
 
+
         public virtual void SuggestBasedOn(string currentLine)
         {
             var theLastWord = currentLine.Split(' ').Last();
             var matchedSuggestions = suggestions.ThatComplete(theLastWord);
-            if (matchedSuggestions.Length == 0)
+            matchedSuggestions = matchedSuggestions.Select(m=>m.Replace(@"\r","").Replace("\n","")).ToArray();
+            if (matchedSuggestions.Length == 0
+            || consoleWriter.CursorLeft - theLastWord.Length < 0
+            || matchedSuggestions.Any(s => s.Length + consoleWriter.CursorLeft
+                                                    > consoleWriter.BufferWidth))
                 return;
 
             var originalTop = consoleWriter.CursorTop;
             var originalLeft = consoleWriter.CursorLeft;
+            var left = originalLeft - theLastWord.Length;
             consoleWriter.WriteLine();
             foreach (var suggestion in matchedSuggestions)
             {
-                consoleWriter.CursorLeft = originalLeft - theLastWord.Length;
+                consoleWriter.CursorLeft = left;
                 consoleWriter.WriteLine(suggestion);
             }
-            printedSuggestionsCount = matchedSuggestions.Length;
-            if (originalTop + matchedSuggestions.Length > consoleWriter.BufferHeight - 1)
+            printedSuggestionsCount = matchedSuggestions.Length + 1;
+            var contentHeight = originalTop + matchedSuggestions.Length + 1;
+            var windowHeight = consoleWriter.BufferHeight - 1;
+            var overflowenSuggestionCount = contentHeight - windowHeight;
+
+            if (overflowenSuggestionCount > 0)
             {
-                consoleWriter.CursorTop -= matchedSuggestions.Length + 1;
-
-
-                var contentHeight = originalTop + matchedSuggestions.Length + 1;
-                var windowHeight = consoleWriter.BufferHeight - 1;
-                var diff = contentHeight - windowHeight;
-                promptTop -= diff;
+                consoleWriter.CursorTop -= overflowenSuggestionCount;
+                // consoleWriter.CursorTop -= matchedSuggestions.Length + 1;
+                promptTop -= overflowenSuggestionCount;
             }
             else
             {

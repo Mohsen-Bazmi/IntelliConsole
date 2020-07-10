@@ -16,8 +16,8 @@ namespace IntelliConsole
         public static Paint Background(ConsoleColor color)
         => new Paint(null, (ConsoleColor?)color);
         public Paint AndFore(ConsoleColor color)
-        => new Paint((ConsoleColor?)color);
+        => new Paint((ConsoleColor?)color, BackgroundColor);
         public Paint AndBack(ConsoleColor color)
-        => new Paint(null, (ConsoleColor?)color);
+        => new Paint(ForegroundColor, (ConsoleColor?)color);
     }
 }

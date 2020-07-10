@@ -145,6 +145,7 @@ cursorLeft:{lineCtx.CursorLeft},line:{lineCtx.DisplayingLine},char:{c}", ex);
         }
         protected virtual LineContext OnNextLine(LineContext lineCtx)
         {
+
             if (!historyNarrator.MoveNext())
                 return lineCtx;
             return lineCtx.WithLine(historyNarrator.Current)

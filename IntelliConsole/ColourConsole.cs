@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace IntelliConsole
@@ -10,17 +11,21 @@ namespace IntelliConsole
     {
         readonly ISyntaxHighlighting intelliSense;
         readonly IConsoleWriter consoleWriter;
+        readonly ConsoleColor defaultBackgroundColor;
+        readonly ConsoleColor defaultForegroundColor;
         public ColourConsoleWriter(ISyntaxHighlighting intelliSense, IConsoleWriter consoleWriter)
         {
             this.intelliSense = intelliSense;
             this.consoleWriter = consoleWriter;
+            defaultBackgroundColor = consoleWriter.BackgroundColor;
+            defaultForegroundColor = consoleWriter.ForegroundColor;
         }
         public void Write(string text)
         {
             var viewModels = intelliSense.GetAllRulesFor(new Line(text));
 
-            var defaultBackgroundColor = consoleWriter.BackgroundColor;
-            var defaultForegroundColor = consoleWriter.ForegroundColor;
+            // var defaultBackgroundColor = consoleWriter.BackgroundColor;
+            // var defaultForegroundColor = consoleWriter.ForegroundColor;
             for (var i = 0; i < text.Length; i++)
             {
                 var vm = viewModels.LastOrDefault(vm => vm.FromIndex <= i && i < vm.FromIndex + vm.Length);
