@@ -25,11 +25,9 @@ namespace IntelliConsole
             var originalLeft = consoleWriter.CursorLeft;
             for (; printedSuggestionsCount > 0; printedSuggestionsCount--)
             {
-                // consoleWriter.WriteLine();
                 consoleWriter.CursorTop = originalTop + printedSuggestionsCount;
                 consoleWriter.CursorLeft = consoleWriter.BufferWidth;
                 for (var j = consoleWriter.BufferWidth; j > 0; j--)
-                    // consoleWriter.Write(" ");
                     consoleWriter.Write("\b \b");
             }
             consoleWriter.CursorTop = originalTop;

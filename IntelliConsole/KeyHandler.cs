@@ -15,8 +15,8 @@ namespace IntelliConsole
         public virtual LineContext Handle(ConsoleKeyInfo keyInfo, LineContext lineCtx)
         => keyInfo.Key switch
         {
-            ConsoleKey.UpArrow => OnPreviousLine(lineCtx),
-            ConsoleKey.DownArrow => OnNextLine(lineCtx),
+            ConsoleKey.UpArrow => OnArrowUp(lineCtx),
+            ConsoleKey.DownArrow => OnArrowDown(lineCtx),
             ConsoleKey.LeftArrow => OnLeftArrow(lineCtx),
             ConsoleKey.B when keyInfo.Modifiers == ConsoleModifiers.Control => OnLeftArrow(lineCtx),
             ConsoleKey.RightArrow => OnRightArrow(lineCtx),
@@ -135,23 +135,28 @@ cursorLeft:{lineCtx.CursorLeft},line:{lineCtx.DisplayingLine},char:{c}", ex);
         }
 
 
-
-        protected virtual LineContext OnPreviousLine(LineContext lineCtx)
+        protected LineContext PreviousLine(LineContext lineCtx)
         {
             if (!historyNarrator.MovePrevious())
                 return lineCtx;
             return lineCtx.WithLine(historyNarrator.Current)
                           .WithCursorLeft(historyNarrator.Current.Length);
         }
-        protected virtual LineContext OnNextLine(LineContext lineCtx)
+        protected virtual LineContext OnArrowUp(LineContext lineCtx)
         {
+            return PreviousLine(lineCtx);
+        }
 
+        protected LineContext NextLine(LineContext lineCtx)
+        {
             if (!historyNarrator.MoveNext())
                 return lineCtx;
             return lineCtx.WithLine(historyNarrator.Current)
                           .WithCursorLeft(historyNarrator.Current.Length);
         }
-
-
+        protected virtual LineContext OnArrowDown(LineContext lineCtx)
+        {
+            return NextLine(lineCtx);
+        }
     }
 }
