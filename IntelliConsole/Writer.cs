@@ -42,11 +42,14 @@ namespace IntelliConsole
         {
             var theLastWord = currentLine.Split(' ').Last();
             var matchedSuggestions = suggestions.ThatComplete(theLastWord);
-            matchedSuggestions = matchedSuggestions.Select(m=>m.Replace(@"\r","").Replace("\n","")).ToArray();
+            var theLastWordOverflowsConsoleWidth = consoleWriter.CursorLeft - theLastWord.Length < 0;
+            var anySuggestionsOverflowConsoleWidth 
+                = matchedSuggestions.Any(s => s.Length + consoleWriter.CursorLeft
+                                                      > consoleWriter.BufferWidth);
             if (matchedSuggestions.Length == 0
-            || consoleWriter.CursorLeft - theLastWord.Length < 0
-            || matchedSuggestions.Any(s => s.Length + consoleWriter.CursorLeft
-                                                    > consoleWriter.BufferWidth))
+            || theLastWordOverflowsConsoleWidth
+            || anySuggestionsOverflowConsoleWidth
+            )
                 return;
 
             var originalTop = consoleWriter.CursorTop;
@@ -65,8 +68,7 @@ namespace IntelliConsole
 
             if (overflowenSuggestionCount > 0)
             {
-                consoleWriter.CursorTop -= overflowenSuggestionCount;
-                // consoleWriter.CursorTop -= matchedSuggestions.Length + 1;
+                consoleWriter.CursorTop = originalTop - overflowenSuggestionCount;
                 promptTop -= overflowenSuggestionCount;
             }
             else
@@ -79,26 +81,20 @@ namespace IntelliConsole
 
         public void MoveToNextLine()
         {
-            isInit = true;
+            previousLen = 0;
+                promptLength = consoleWriter.CursorLeft;
+                initialPromptTop = consoleWriter.CursorTop;
+                promptTop = initialPromptTop;
             consoleWriter.WriteLine();
         }
         int previousLen = 0;
         int initialPromptTop;
         int promptTop;
-        bool isInit = true;
         int promptLength;
 
 
         public void UpdateTheCurrentLine(string line, int localCursorLeft)
         {
-            if (isInit)
-            {
-                isInit = false;
-                previousLen = 0;
-                promptLength = consoleWriter.CursorLeft;
-                initialPromptTop = consoleWriter.CursorTop;
-                promptTop = initialPromptTop;
-            }
             var len = promptLength + line.Length;
 
             if (len == previousLen)
@@ -111,23 +107,13 @@ namespace IntelliConsole
 
 
             consoleWriter.CursorLeft = (promptLength + localCursorLeft) % consoleWriter.BufferWidth;
-            // consoleWriter.CursorTop=len/consoleWriter.BufferWidth;
-            // var newLen = promptLength + line.Length;
             consoleWriter.CursorTop = promptTop + (promptLength + localCursorLeft) / consoleWriter.BufferWidth;
 
             if (len == previousLen)
                 System.Console.CursorVisible = true;
 
-            // if (line.Length > 0 && consoleWriter.CursorLeft == 0
-            // && (len > previousLen))
-            //     consoleWriter.CursorTop++;
-            // if (consoleWriter.BufferWidth - 1 == consoleWriter.CursorLeft)
-            //     if (newLen < previousLen)
-            //         consoleWriter.CursorTop--;
-
             var lineHeight = len / consoleWriter.BufferWidth;
             var isLastLineOfConsole = promptTop + lineHeight >= consoleWriter.BufferHeight;
-            // var isLastLineOfConsole = initialPromptTop == consoleWriter.BufferHeight - 1;
 
             if (isLastLineOfConsole && len >= previousLen)
             {
@@ -135,8 +121,6 @@ namespace IntelliConsole
                                 - (len - 1) / consoleWriter.BufferWidth;
 
             }
-            // if(consoleWriter.BufferWidth == consoleWriter.CursorLeft)
-            //     currentPromptTop++;
             previousLen = len;
         }
 
