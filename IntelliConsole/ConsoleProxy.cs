@@ -38,6 +38,8 @@ namespace IntelliConsole
             get => Console.CursorTop;
             set => Console.CursorTop = value;
         }
+        public int PromptTop { get; set; }
+        public int PromptLength { get; set; }
         public int BufferHeight
         => Console.BufferHeight;
 
@@ -53,19 +55,30 @@ namespace IntelliConsole
         }
         public void Backspace()
         {
-            //Write("\b \b");
-            if (CursorLeft > 0)
+            void RemoveTheLastCharFromCurrentLine()
             {
-                CursorLeft--;
-                Write(' ');
-                CursorLeft--;
+                Write("\b \b");
+                // CursorLeft--;
+                // Write(' ');
+                // if (CursorLeft > 0)
+                //     CursorLeft--;
             }
-            else
+            void RemoveTheLastCharFromPreviousLine()
             {
                 CursorTop--;
                 CursorLeft = BufferWidth;
                 Write(' ');
+                CursorTop--;
+                CursorLeft = BufferWidth - 1;
             }
+
+            //Write("\b \b");
+            if (CursorLeft > 0)
+                RemoveTheLastCharFromCurrentLine();
+            else
+                RemoveTheLastCharFromPreviousLine();
         }
+
+
     }
 }

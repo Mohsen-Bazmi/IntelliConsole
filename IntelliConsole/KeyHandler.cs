@@ -23,7 +23,7 @@ namespace IntelliConsole
             ConsoleKey.End => OnEnd(lineCtx),
             ConsoleKey.Home => OnHome(lineCtx),
             ConsoleKey.A when keyInfo.Modifiers == ConsoleModifiers.Control => OnHome(lineCtx),
-            ConsoleKey.Tab => OnTab(lineCtx),
+            // ConsoleKey.Tab => OnTab(lineCtx),
             ConsoleKey.Backspace => OnBackspace(lineCtx),
             ConsoleKey.Delete => OnDelete(lineCtx),
             _ => RecordChar(lineCtx, keyInfo.KeyChar)
@@ -39,23 +39,23 @@ namespace IntelliConsole
         => lineCtx.WithCursorLeft(lineCtx.DisplayingLine.Length);
 
 
-        protected virtual LineContext CompleteTheSuggestion(LineContext lineCtx)
-        {
-            var lineWords = lineCtx.DisplayingLine.Split(' ');
-            var matchedSuggestions = suggestions.ThatComplete(lineWords.Last());
-            if (matchedSuggestions.Length == 0)
-                return lineCtx;
+        // protected virtual LineContext CompleteTheSuggestion(LineContext lineCtx)
+        // {
+        //     var lineWords = lineCtx.DisplayingLine.Split(' ');
+        //     var matchedSuggestions = suggestions.ThatComplete(lineWords.Last());
+        //     if (matchedSuggestions.Length == 0)
+        //         return lineCtx;
 
-            // Console.WriteLine();
-            var previousWords = string.Join(' ', lineWords.SkipLast(1));
-            if (lineWords.Length > 1)
-                previousWords += ' ';
-            var line = previousWords + matchedSuggestions[0];
-            return lineCtx.WithLine(line)
-                          .WithCursorLeft(line.Length);
-        }
-        protected virtual LineContext OnTab(LineContext lineCtx)
-        => CompleteTheSuggestion(lineCtx);
+        //     // Console.WriteLine();
+        //     var previousWords = string.Join(' ', lineWords.SkipLast(1));
+        //     if (lineWords.Length > 1)
+        //         previousWords += ' ';
+        //     var line = previousWords + matchedSuggestions[0];
+        //     return lineCtx.WithLine(line)
+        //                   .WithCursorLeft(line.Length);
+        // }
+        // protected virtual LineContext OnTab(LineContext lineCtx)
+        // => CompleteTheSuggestion(lineCtx);
 
 
         protected virtual LineContext OnBackspace(LineContext lineCtx)

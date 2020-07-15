@@ -15,6 +15,8 @@ namespace IntelliConsole
         void Write(params char[] c);
         int CursorLeft { get; set; }
         int CursorTop { get; set; }
+        int PromptTop { get; set; }
+        int PromptLength { get; set; }
         int BufferHeight { get; }
         ConsoleColor BackgroundColor { get; set; }
         ConsoleColor ForegroundColor { get; set; }

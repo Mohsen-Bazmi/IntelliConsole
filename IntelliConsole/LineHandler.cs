@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 
 namespace IntelliConsole
 {
@@ -6,20 +7,23 @@ namespace IntelliConsole
     {
         readonly IHistory history;
         IHistoryNarrator historyNarrator;
-        ISuggestions suggestions;
-        Writer writer;
+        readonly ISuggestions suggestions;
+        readonly SuggestionPrinter suggestionPrinter;
+        readonly Writer writer;
         public LineHandler(IHistory history
                          , ISuggestions suggestions
-                         , Writer writer)
+                         , Writer writer
+                         , SuggestionPrinter suggestionPrinter)
         {
             this.history = history;
             historyNarrator = history.NewReverseNarrator();
             this.suggestions = suggestions;
             this.writer = writer;
+            this.suggestionPrinter = suggestionPrinter;
         }
         public void NewLine()
         {
-            writer.ClearPrintedSuggestions();
+            suggestionPrinter.ClearPrintedSuggestions();
             history.Record(CurrentLine);
 
             context = LineContext.Initial;
@@ -30,15 +34,34 @@ namespace IntelliConsole
         public string CurrentLine => context.DisplayingLine;
         LineContext context = LineContext.Initial;
 
+        // public virtual IObservable<string> HandleKeyAndNotifyLines(ConsoleKeyInfo ki)
+        // {
+        //     if (ki.Key == ConsoleKey.Enter)
+        //     {
+        //         var result = Observable.Return(CurrentLine);
+        //         NewLine();
+        //         return result;
+        //     }
+        //     Handle(ki);
+        //     return Observable.Empty<string>();
+        // }
         public virtual void Handle(ConsoleKeyInfo keyInfo)
         {
-            writer.ClearPrintedSuggestions();
+            if (suggestionPrinter.CanHandle(keyInfo))
+            {
+                context = suggestionPrinter.Handle(keyInfo, context);
 
-            var handler = new KeyHandler(historyNarrator, suggestions);
-            context = handler.Handle(keyInfo, context);
-
-            writer.UpdateTheCurrentLine(context.DisplayingLine, context.CursorLeft);
-            writer.SuggestBasedOn(context.DisplayingLine);
+                writer.UpdateTheCurrentLine(context.DisplayingLine, context.CursorLeft);
+                // suggestionPrinter.SuggestBasedOn(context.DisplayingLine);
+            }
+            else
+            {
+                suggestionPrinter.ClearPrintedSuggestions();
+                var handler = new KeyHandler(historyNarrator, suggestions);
+                context = handler.Handle(keyInfo, context);
+                writer.UpdateTheCurrentLine(context.DisplayingLine, context.CursorLeft);
+                suggestionPrinter.SuggestBasedOn(context.DisplayingLine);
+            }
         }
     }
 }

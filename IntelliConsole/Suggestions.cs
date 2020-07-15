@@ -10,7 +10,7 @@ namespace IntelliConsole
     public class Suggestions : ISuggestions
     {
         public static Suggestions From(params string[] possibleSuggestions)
-        => new Suggestions(possibleSuggestions.Select(m => m.Replace(@"\r", "").Replace("\n", "")).ToArray());
+        => new Suggestions(possibleSuggestions.Select(m => m.Replace("\r", "").Replace("\n", "")).ToArray());
         string[] possibleSuggestions;
         protected Suggestions(string[] possibleSuggestions)
         {

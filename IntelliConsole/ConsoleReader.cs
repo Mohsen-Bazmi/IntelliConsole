@@ -27,12 +27,14 @@ namespace IntelliConsole
             this.consoleObserver = consoleObserver;
             var colourConsole = new ColourConsoleWriter(intelliSense, consoleWriter);
             var writer = new Writer(consoleWriter, colourConsole, suggestions);
-            lineHandler = new LineHandler(history, suggestions, writer);
+            var suggestionPrinter = new SuggestionPrinter(consoleWriter, colourConsole, suggestions);
+            lineHandler = new LineHandler(history, suggestions, writer,suggestionPrinter);
         }
 
         public IObservable<string> ObserveLines()
         => consoleObserver.KeyPress.SelectMany(ki =>
          {
+             //  return lineHandler.HandleKeyAndNotifyLines(ki);
              if (ki.Key == ConsoleKey.Enter)
              {
                  var line = lineHandler.CurrentLine;
